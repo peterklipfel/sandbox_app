@@ -8,6 +8,6 @@ def full_title(page_title)
 end
 
 def check_h1_title(h1, title)
-  	it { should have_selector('h1', :text => h1)}
-    it { should have_selector('title', :text => title)}
+	it { should have_selector('h1', :text => h1)}
+  it { should have_selector('title', :text => title)}
 end
