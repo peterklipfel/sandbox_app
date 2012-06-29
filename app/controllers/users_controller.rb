@@ -10,7 +10,8 @@ class UsersController < ApplicationController
   def create
   	@user = User.new(params[:user])
   	if @user.save
-  		#stub
+  		flash[:success] = 'Welcome to My Sandbox'
+  		redirect_to @user
   	else
   		render 'new'
   	end
