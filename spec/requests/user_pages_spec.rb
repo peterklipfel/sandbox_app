@@ -4,8 +4,31 @@ describe "UserPages" do
 	subject { page }
 	describe  "signup page" do
 		before { visit signup_path }
-		check_h1_title('Sign Up', full_title('Sign Up'))
-	end	
+		let(:submit) { "Create My Account" }
+
+		describe "check title" do
+			check_h1_title('Sign Up', full_title('Sign Up'))
+		end
+		
+		describe "invalid information" do
+			it "should not create a user" do
+				expect { click_button submit }.not_to change(User, :count)
+			end
+		end
+
+		describe "valid information" do
+			before do
+				fill_in "Name", 					:with => "Ima Yooser"
+				fill_in "Email",					:with => "stuff@golem.com"
+				fill_in "Password",				:with => "g0odPaS$word!"
+				fill_in "Confirmation",		:with => "g0odPaS$word!"
+			end
+			it "should create a user" do
+				expect { click_button submit }.to change(User, :count).by(1)
+			end
+		end
+	end
+
   describe "profile page" do
 	  let(:user) { FactoryGirl.create(:user) }
 	  before { visit user_path(user) }
