@@ -106,4 +106,8 @@ describe User do
       specify { user_for_invalid_password.should be_false }
     end
   end
+  describe "login token" do
+    before { @user.save }
+    its(:login_token) { should_not be_blank }
+  end    
 end
