@@ -22,17 +22,16 @@ describe "AuthenticationPages" do
 		describe 'with valid information' do
 			let(:user) { FactoryGirl.create(:user) }
 			before do
-				fill_in :email,					:with => user.email
-				fill_in :password,			:with => user.password
+				fill_in :email,					with: user.email
+				fill_in :password,			with: user.password
 				click_button 'Sign In'
 			
 			end
-
-			it { should have_selector('title',  :text => user.name) }
+			it { should have_selector('h1',  :text => user.name) }
+			it { should have_selector('div', :text => "Couldn't find that user/email combination")}
 			it { should have_link('Profile', 		:href => user_path(user)) }
 			it { should have_link('Sign Out', 	:href => signout_path) }
 			it { should_not have_link('Sign in',:href => signin_path) }
 		end
-
 	end
 end
