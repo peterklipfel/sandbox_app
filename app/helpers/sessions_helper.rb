@@ -18,6 +18,10 @@ module SessionsHelper
 		@current_user ||= User.find_by_login_token(cookies[:login_token])
 	end
 
+	def current_user?(user)
+		current_user == user
+	end
+
 	def signed_in?
 		!current_user.nil?
 	end

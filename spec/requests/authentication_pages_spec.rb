@@ -75,6 +75,19 @@ describe "AuthenticationPages" do
 
 	describe 'authorization' do
 		let(:user) { FactoryGirl.create(:user) }
+		describe 'as wrong user' do
+			let(:other_user) { FactoryGirl.create(:user, :email => 'im@bit.dif') }
+			before { sign_in user }
+			describe 'visiting the Edit-User page' do
+				before { visit edit_user_path(other_user) }
+				it { should_not have_selector(:title, :text => full_title('Edit User')) }
+			end
+			describe 'submitting a put request to the "update user" action' do
+				before{ put user_path(other_user) }
+				specify { response.should redirect_to root_path}
+			end
+		end
+
 		describe 'for users that aren\'t signed in' do
 			describe 'when trying to visit private page' do
 				before do
