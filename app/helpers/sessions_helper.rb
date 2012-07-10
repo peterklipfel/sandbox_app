@@ -21,4 +21,13 @@ module SessionsHelper
 	def signed_in?
 		!current_user.nil?
 	end
+
+	def save_attempted_uri
+		session[:redirect] = request.fullpath
+	end
+
+	def redirect_to_desired_uri(default)
+		redirect_to(session[:redirect] || default)
+		session.delete(:redirect)
+	end
 end

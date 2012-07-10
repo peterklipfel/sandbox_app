@@ -38,8 +38,12 @@ describe "AuthenticationPages" do
 
 	describe 'Edit' do
 		let(:user) { FactoryGirl.create(:user) }
-		before { visit edit_user_path(user) }
+		before do 
+			sign_in(user)
+			visit edit_user_path(user)
+		end
 		describe 'Page' do
+			it { should_not have_content 'Sign In' }
 			it { should have_selector('h1', :text => 'Update Your Profile') }
 			it { should have_selector('title', :text => 'Edit User') }
 			it { should have_link('change', :href => 'http://gravatar.com/emails') }
@@ -55,13 +59,13 @@ describe "AuthenticationPages" do
 			let(:new_email) { 'fwoop@shoop.oop' }
 			let(:new_name) { 'Anoo Idantt' }
 			before do
-				fill_in 'Name', with: new_name
-				fill_in 'Email', with: new_email
-				fill_in 'Password', with: user.password
+				fill_in 'Name', 						with: new_name
+				fill_in 'Email', 						with: new_email
+				fill_in 'Password', 				with: user.password
 				fill_in 'Confirm Password', with: user.password
 				click_button 'Save Changes' 
 			end
-			it { should have_selector('title', :text => 'Sandbox App | ' + new_name) }
+			it { should have_selector('title', :text => new_name) }
 			it { should have_selector('div.alert.alert-success') }
 			it { should have_link('Sign Out', :href => signout_path) }
 			specify { user.reload.name.should == new_name }
@@ -70,9 +74,23 @@ describe "AuthenticationPages" do
 	end
 
 	describe 'authorization' do
-
+		let(:user) { FactoryGirl.create(:user) }
 		describe 'for users that aren\'t signed in' do
-			describe 'in users controller'
+			describe 'when trying to visit private page' do
+				before do
+					visit edit_user_path(user)
+					fill_in 'Email', with: user.email
+					fill_in 'Password', with: user.password
+					click_button 'Sign In'
+				end
+				describe 'after sign in' do
+					it 'should render the desired private page' do
+						page.should have_selector('title', :text => 'Edit User')
+					end
+				end
+			end
+
+			describe 'in users controller' do
 				describe 'visiting the edit page' do
 					before { visit edit_user_path(user) }
 					it { should have_selector('title', :text => 'Sign In') }

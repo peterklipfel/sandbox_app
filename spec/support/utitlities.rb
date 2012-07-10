@@ -14,9 +14,9 @@ end
 
 def sign_in(user)
 	visit(signin_path)
-	fill_in :email, with: 	 user.email
-	fill_in :password, with: user.password
-	click_button 'Sign In'
+	fill_in 'Email', 		with: 	 	user.email
+	fill_in 'Password', 	with: 		user.password
+	click_button 'Sign In' 
 	# the following line is used in case the testing environment
 	# is not using capybara
 	cookies[:login_token] = user.login_token
