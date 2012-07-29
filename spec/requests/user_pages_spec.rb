@@ -14,7 +14,7 @@ describe "UserPages" do
 		it { should have_selector 'h1', :text => 'All Users' }
 
 		it 'should list all users' do 
-			Users.all.each do |user|
+			User.all.each do |user|
 				page.should have_selector('li', :text => user.name)
 			end
 		end
