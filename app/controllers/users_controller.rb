@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :correct_user, only: [:edit, :update]
   
   def index
-    @users = Users.all
+    @users = User.all
   end
 
   def new
