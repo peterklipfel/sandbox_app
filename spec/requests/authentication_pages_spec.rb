@@ -89,7 +89,7 @@ describe "AuthenticationPages" do
 		end
 
 		describe 'for users that aren\'t signed in' do
-			describe 'when trying to visit private page' do
+			describe 'when trying to visit private page,' do
 				before do
 					visit edit_user_path(user)
 					fill_in 'Email', with: user.email
@@ -98,12 +98,17 @@ describe "AuthenticationPages" do
 				end
 				describe 'after sign in' do
 					it 'should render the desired private page' do
+						page.should_not have_content 'Sign In'
 						page.should have_selector('title', :text => 'Edit User')
 					end
 				end
 			end
 
 			describe 'in users controller' do
+				describe 'visiting user index' do
+					before { visit users_path }
+					it { should have_selector 'title', :text => 'Sign In' }
+				end
 				describe 'visiting the edit page' do
 					before { visit edit_user_path(user) }
 					it { should have_selector('title', :text => 'Sign In') }

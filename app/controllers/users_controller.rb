@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
-  before_filter :signed_in_user, only: [:edit, :update]
+  before_filter :signed_in_user, only: [:index, :edit, :update]
   before_filter :correct_user, only: [:edit, :update]
+  
+  def index
+    @users = Users.all
+  end
+
   def new
   	@user = User.new
   end
@@ -35,7 +40,12 @@ class UsersController < ApplicationController
   private
 
   def signed_in_user
-    redirect_to signin_path, notice: "Please sign in." unless signed_in?
+    if signed_in?
+      # do nothing
+    else
+      save_attempted_uri
+      redirect_to signin_path, notice: "Please sign in." 
+    end
   end
 
   def correct_user
