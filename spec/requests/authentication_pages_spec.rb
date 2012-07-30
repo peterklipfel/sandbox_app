@@ -25,7 +25,6 @@ describe "AuthenticationPages" do
 				fill_in 'Email',					with: user.email
 				fill_in 'Password',				with: user.password
 				click_button 'Sign In'
-			
 			end
 			it { should have_selector('h1',  		:text => user.name) }
 			it { should have_link('Users', 			:href => users_path) }
