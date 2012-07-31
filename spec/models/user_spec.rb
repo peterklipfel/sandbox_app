@@ -25,6 +25,7 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:login_token) }
+  it { should respond_to(:microposts) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -120,5 +121,24 @@ describe User do
   describe "login token" do
     before { @user.save }
     its(:login_token) { should_not be_blank }
-  end    
+  end
+  describe 'micropost associations' do
+    before {@user.save}
+    let!(:old_micropost) do
+      FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+    end
+    let!(:new_micropost) do
+      FactoryGirl.create(:micropost, :user => @user, :created_at => 1.hour.ago)
+    end
+    it 'should have microposts in the right order' do
+      @user.microposts.should == [new_micropost, old_micropost]
+    end
+    it 'should destroy associated microposts' do
+      microposts = @user.microposts
+      @user.destroy
+      microposts.each do |micropost|
+        Micropost.find_by_id(micropost.id).should be_nil
+      end
+    end
+  end 
 end
