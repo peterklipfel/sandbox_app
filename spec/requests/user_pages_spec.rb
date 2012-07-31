@@ -69,9 +69,16 @@ describe "UserPages" do
 
   describe "profile page" do
 	  let(:user) { FactoryGirl.create(:user) }
+	  let(:p1) { FactoryGirl.create(:micropost, :user => user, :content => 'How now brown cow') }
+	  let(:p2) { FactoryGirl.create(:micropost, :user => user, :content => 'Baz')}
 	  before { visit user_path(user) }
 	  # can't use 'check_h1_title(user.name, user.name)' for some reason
 	  it { should have_selector('h1',    :text => user.name) }
 	  it { should have_selector('title', :text => user.name) }
+	  describe 'microposts' do 
+	  	it { should have_content(p1.content) }
+	  	it { should have_content(p2.content) }
+	  	it { should have_content(user.microposts.count) }
+	  end
 	end
 end
