@@ -34,4 +34,13 @@ module SessionsHelper
 		redirect_to(session[:redirect] || default)
 		session.delete(:redirect)
 	end
+
+	def signed_in_user
+    if signed_in?
+      # do nothing
+    else
+      save_attempted_uri
+      redirect_to signin_path, notice: "Please sign in." 
+    end
+  end
 end
