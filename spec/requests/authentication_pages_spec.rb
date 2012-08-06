@@ -106,7 +106,7 @@ describe "AuthenticationPages" do
 					specify { response.should redirect_to signin_path }
 				end
 				describe 'submitting to the destroy action' do
-					before { delete microposts_path(FactoryGirl.create(:micropost)) }
+					before { delete micropost_path(FactoryGirl.create(:micropost)) }
 					specify { response.should redirect_to signin_path }
 				end
 			end
